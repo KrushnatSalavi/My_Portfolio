@@ -69,7 +69,7 @@ export default function Hero() {
           </div>
 
           <div className="mt-10 flex items-center gap-6">
-            <Link href="https://github.com">
+            <Link href="https://github.com/KrushnatSalavi">
               <FaGithub className="text-gray-400 transition hover:text-white" />
             </Link>
 
@@ -90,7 +90,7 @@ export default function Hero() {
   <div className="relative mx-auto flex h-[400px] w-[400px] items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-2xl">
     
     <Image
-      src="/images/krushna.jpeg"
+      src="/images/krushna1.png"
       alt="Krushna Salavi"
       width={300}
       height={300}
