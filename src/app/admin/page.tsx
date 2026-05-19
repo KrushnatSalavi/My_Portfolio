@@ -17,6 +17,15 @@ export default function AdminDashboard() {
     []
   );
 
+  const [blogTitle, setBlogTitle] =
+  useState("");
+
+const [blogContent, setBlogContent] =
+  useState("");
+
+const [blogTags, setBlogTags] =
+  useState("");
+
   const [editingId, setEditingId] =
     useState("");
 
@@ -130,6 +139,30 @@ export default function AdminDashboard() {
   }
 }, []);
 
+async function addBlog(e: any) {
+  e.preventDefault();
+
+  const res = await fetch("/api/blogs", {
+    method: "POST",
+    headers: {
+      "Content-Type":
+        "application/json",
+    },
+    body: JSON.stringify({
+      title: blogTitle,
+      content: blogContent,
+      tags: blogTags.split(","),
+    }),
+  });
+
+  if (res.ok) {
+    alert("Blog Added!");
+
+    setBlogTitle("");
+    setBlogContent("");
+    setBlogTags("");
+  }
+}
   return (
     <div className="min-h-screen bg-black p-10 text-white">
       <div className="mx-auto max-w-6xl">
@@ -414,6 +447,86 @@ export default function AdminDashboard() {
                 </div>
               </div>
             ))}
+            <div className="mt-20">
+
+  <form
+    onSubmit={addBlog}
+    className="
+    rounded-3xl
+    border
+    border-white/10
+    bg-white/5
+    p-8
+    "
+  >
+    <h2 className="mb-8 text-3xl font-bold">
+      Add Blog
+    </h2>
+
+    <div className="space-y-5">
+
+      <input
+        type="text"
+        placeholder="Blog Title"
+        value={blogTitle}
+        onChange={(e) =>
+          setBlogTitle(e.target.value)
+        }
+        className="
+        w-full
+        rounded-xl
+        bg-black/30
+        p-4
+        "
+      />
+
+      <textarea
+        placeholder="Blog Content"
+        value={blogContent}
+        onChange={(e) =>
+          setBlogContent(
+            e.target.value
+          )
+        }
+        className="
+        min-h-[200px]
+        w-full
+        rounded-xl
+        bg-black/30
+        p-4
+        "
+      />
+
+      <input
+        type="text"
+        placeholder="react,nodejs,mongodb"
+        value={blogTags}
+        onChange={(e) =>
+          setBlogTags(e.target.value)
+        }
+        className="
+        w-full
+        rounded-xl
+        bg-black/30
+        p-4
+        "
+      />
+
+      <button
+        className="
+        rounded-xl
+        bg-indigo-500
+        px-8
+        py-4
+        "
+      >
+        Publish Blog
+      </button>
+
+    </div>
+  </form>
+
+</div>
 
           </div>
         </div>
