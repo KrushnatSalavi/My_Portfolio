@@ -1,6 +1,6 @@
 import AIChat from "../components/AIChat";
 import Footer from "../components/layout/Footer";
-import Navbar from "../components/layout/Navbar";
+import Navbar from "../components/Navbar";
 import BackgroundGlow from "../components/shared/BackgroundGlow";
 import Contact from "../sections/contact/Contact";
 import Experience from "../sections/experience/Experience";
@@ -14,7 +14,7 @@ export default function Home() {
     <main className="relative overflow-hidden">
       <BackgroundGlow />
 
-      <Navbar />
+      <Navbar/>
 
       <Hero />
 
