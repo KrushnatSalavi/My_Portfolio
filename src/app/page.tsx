@@ -1,3 +1,4 @@
+import AIChat from "../components/AIChat";
 import Footer from "../components/layout/Footer";
 import Navbar from "../components/layout/Navbar";
 import BackgroundGlow from "../components/shared/BackgroundGlow";
@@ -22,10 +23,12 @@ export default function Home() {
       <Skills />
 
       <Experience />
-
+      <AIChat />
       <GithubStats />
 
-      <Contact/>
+      <Contact />
+
+
 
       <Footer />
     </main>

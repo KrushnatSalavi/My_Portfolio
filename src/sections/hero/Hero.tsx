@@ -73,7 +73,9 @@ export default function Hero() {
               <FaGithub className="text-gray-400 transition hover:text-white" />
             </Link>
 
-            <Link href="https://linkedin.com">
+            <Link href="https://www.linkedin.com/in/krushna-salavi
+
+">
               <FaLinkedin className="text-2xl text-gray-400 transition hover:text-white" /> 
             </Link>
           </div>

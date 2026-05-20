@@ -1,5 +1,6 @@
-import OpenAI from "openai";
 import { NextResponse } from "next/server";
+
+import OpenAI from "openai";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -7,7 +8,7 @@ const openai = new OpenAI({
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const { message } = await req.json();
 
     const completion =
       await openai.chat.completions.create({
@@ -16,32 +17,50 @@ export async function POST(req: Request) {
           {
             role: "system",
             content: `
-You are Krushna's AI portfolio assistant.
+You are an AI assistant for Krushna Salavi's portfolio.
 
-Answer questions about:
-- MERN skills
-- projects
-- experience
-- frontend development
-- backend development
+Information about Krushna:
 
-Keep responses concise and professional.
-`,
+- BCA graduate
+- MERN stack developer
+- Skills:
+  React.js
+  Next.js
+  Node.js
+  Express.js
+  MongoDB
+  JavaScript
+  Tailwind CSS
+
+- Built:
+  Full-stack portfolio
+  Admin dashboard
+  CRUD systems
+  AI-integrated applications
+
+- Interested in:
+  Full-stack development
+  Scalable web applications
+  Modern UI/UX
+
+Answer professionally and confidently.
+            `,
           },
           {
             role: "user",
-            content: body.message,
+            content: message,
           },
         ],
       });
 
     return NextResponse.json({
-      response:
-        completion.choices[0].message.content,
+      reply:
+        completion.choices[0].message
+          .content,
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "AI error" },
+      { error: "AI request failed" },
       { status: 500 }
     );
   }
