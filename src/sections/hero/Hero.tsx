@@ -11,7 +11,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center px-6">
+    <section id="home" className="relative flex min-h-screen items-center justify-center px-6">
       <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-2">
 
         <motion.div
@@ -23,7 +23,7 @@ export default function Hero() {
             FULL STACK DEVELOPER
           </p>
 
-          <h1 className="text-5xl font-black leading-tight text-white md:text-7xl">
+          <h1 className="text-5xl font-black leading-tight text-white md:text-7xl mt-15">
             Krushnat
             <span className="block text-indigo-400">
               Salavi

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 export default function Projects() {
   const [projects, setProjects] = useState<any[]>(
@@ -26,7 +27,21 @@ export default function Projects() {
       id="projects"
       className="px-6 py-28"
     >
-      <div className="mx-auto max-w-7xl">
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: 50,
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 0.6,
+        }}
+        viewport={{ once: true }}
+        className="mx-auto max-w-7xl"
+      >
 
         <div className="mb-16">
           <h2 className="text-5xl font-bold text-white">
@@ -105,7 +120,7 @@ export default function Projects() {
           ))}
 
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
