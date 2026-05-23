@@ -22,7 +22,7 @@ export default function AIChat() {
   return (
     <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
       <h2 className="mb-4 text-2xl font-bold text-white">
-        Ask AI About Krushna
+        Ask AI About Krushnat
       </h2>
 
       <input

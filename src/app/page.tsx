@@ -10,6 +10,7 @@ import Hero from "../sections/hero/Hero";
 import Projects from "../sections/projects/Projects";
 import Skills from "../sections/skills/Skills";
 // import Testimonials from "../sections/testimonials/Testimonials";
+
 export default function Home() {
   return (
     <main className="relative overflow-hidden">
