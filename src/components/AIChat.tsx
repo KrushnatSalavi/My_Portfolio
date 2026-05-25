@@ -1,5 +1,6 @@
 "use client";
 
+import { input } from "framer-motion/client";
 import { useState } from "react";
 
 export default function AIChat() {
@@ -10,7 +11,7 @@ export default function AIChat() {
     const res = await fetch("/api/ai-chat", {
       method: "POST",
       body: JSON.stringify({
-        message,
+        message: input,
       }),
     });
 
