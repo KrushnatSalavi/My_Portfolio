@@ -51,6 +51,12 @@ export default function Hero() {
             production-level architecture.
           </p>
 
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-gray-400">
+            I build scalable full-stack applications with
+            modern UI, performance optimization, and
+            production-level architecture.
+          </p>
+
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
               href="#projects"
