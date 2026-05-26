@@ -67,7 +67,7 @@ export default function Hero() {
             </Link>
 
             <Link
-              href="/resume.pdf"
+              href="/Resume/Krushnat_Salavi_Resume.pdf"
               className="rounded-2xl border border-white/10 bg-white/5 px-7 py-4 text-white backdrop-blur-xl transition hover:border-indigo-500"
             >
               Download Resume
