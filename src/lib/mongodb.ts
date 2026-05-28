@@ -1,10 +1,5 @@
 import mongoose from "mongoose";
 
-console.log(
-  "ENV VALUE:",
-  process.env.MONGODB_URI
-);
-
 const MONGODB_URI =
   process.env.MONGODB_URI!;
 
@@ -17,20 +12,23 @@ if (!MONGODB_URI) {
 let cached = (global as any).mongoose;
 
 if (!cached) {
-  cached = (global as any).mongoose = {
-    conn: null,
-    promise: null,
-  };
+  cached = (global as any).mongoose =
+    {
+      conn: null,
+      promise: null,
+    };
 }
 
-export async function connectDB() {
+async function connectDB() {
   if (cached.conn) {
     return cached.conn;
   }
 
   if (!cached.promise) {
     cached.promise =
-      mongoose.connect(MONGODB_URI);
+      mongoose.connect(
+        MONGODB_URI
+      );
   }
 
   cached.conn =
@@ -38,3 +36,5 @@ export async function connectDB() {
 
   return cached.conn;
 }
+
+export default connectDB;

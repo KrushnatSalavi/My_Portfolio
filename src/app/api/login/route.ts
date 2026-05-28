@@ -2,27 +2,45 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  try {
+    const body = await req.json();
 
-  const { email, password } = body;
+    const { email, password } = body;
 
-  if (
-    email === "admin@gmail.com" &&
-    password === "123456"
-  ) {
-    const token = jwt.sign(
-      { email },
-      process.env.JWT_SECRET!,
+    if (
+      email === "admin@gmail.com" &&
+      password === "123456"
+    ) {
+      const token = jwt.sign(
+        { email },
+        process.env.JWT_SECRET as string,
+        {
+          expiresIn: "7d",
+        }
+      );
+
+      return NextResponse.json({
+        success: true,
+        token,
+      });
+    }
+
+    return NextResponse.json(
       {
-        expiresIn: "7d",
-      }
+        success: false,
+        error: "Invalid credentials",
+      },
+      { status: 401 }
     );
+  } catch (error) {
+    console.log(error);
 
-    return NextResponse.json({ token });
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Server error",
+      },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json(
-    { error: "Invalid credentials" },
-    { status: 401 }
-  );
 }

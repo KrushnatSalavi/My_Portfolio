@@ -1,76 +1,121 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] =
+    useState("");
+
   const [loading, setLoading] =
-  useState(false);
+    useState(false);
 
-  async function handleLogin(e: any) {
-  e.preventDefault();
+  const [error, setError] =
+    useState("");
 
-  setLoading(true);
+  async function handleLogin(
+    e: React.FormEvent
+  ) {
+    e.preventDefault();
 
-  const res = await fetch(
-    "/api/login",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type":
-          "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch(
+        "/api/login",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(
+          data.error || "Login failed"
+        );
+
+        setLoading(false);
+        return;
+      }
+
+      // SAVE TOKEN
+      localStorage.setItem(
+        "token",
+        data.token
+      );
+
+      // REDIRECT
+      router.push("/dashboard");
+    } catch (err) {
+      console.log(err);
+
+      setError("Something went wrong");
     }
-  );
 
-  const data = await res.json();
-
-  setLoading(false);
-
-  if (data.token) {
-    localStorage.setItem(
-      "token",
-      data.token
-    );
-
-    window.location.href =
-      "/admin";
-  } else {
-    alert(data.error);
+    setLoading(false);
   }
-}
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black">
       <form
         onSubmit={handleLogin}
-        className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl"
+        className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 p-8"
       >
-        <h1 className="mb-8 text-3xl font-bold text-white">
+        <h1 className="mb-6 text-3xl font-bold text-white">
           Admin Login
         </h1>
+
+        {error && (
+          <p className="mb-4 text-red-500">
+            {error}
+          </p>
+        )}
 
         <input
           type="email"
           placeholder="Email"
-          className="mb-4 w-full rounded-xl bg-black/30 p-4 text-white"
-          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          onChange={(e) =>
+            setEmail(e.target.value)
+          }
+          className="mb-4 w-full rounded-xl bg-black/20 p-4 text-white outline-none"
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="mb-6 w-full rounded-xl bg-black/30 p-4 text-white"
-          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          onChange={(e) =>
+            setPassword(
+              e.target.value
+            )
+          }
+          className="mb-6 w-full rounded-xl bg-black/20 p-4 text-white outline-none"
         />
 
-        <button className="w-full rounded-xl bg-indigo-500 p-4 text-white">
-          {loading ? "Loading..." : "Login"}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-xl bg-indigo-500 p-4 text-white"
+        >
+          {loading
+            ? "Loading..."
+            : "Login"}
         </button>
       </form>
     </div>
