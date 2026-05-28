@@ -4,10 +4,16 @@ const ProjectSchema =
   new mongoose.Schema(
     {
       title: String,
+
       description: String,
-      github: String,
-      live: String,
+
+      image: String,
+
       tech: [String],
+
+      github: String,
+
+      live: String,
     },
     {
       timestamps: true,

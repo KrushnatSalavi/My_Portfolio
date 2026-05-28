@@ -1,7 +1,7 @@
 // src/sections/skills/Skills.tsx
 
 const skills = {
-  Frontend: ["React", "Next.js", "Tailwind CSS", "TypeScript"],
+  Frontend: ["React", "Next.js", "Tailwind CSS", "TypeScript", "JavaScript"],
   Backend: ["Node.js", "Express.js", "REST APIs"],
   Database: ["MongoDB", "MySQL"],
   Tools: ["Git", "GitHub", "Postman", "Vercel"],

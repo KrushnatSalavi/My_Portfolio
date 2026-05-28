@@ -1,26 +1,77 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { ExternalLink } from "lucide-react";
+
 import { FaGithub } from "react-icons/fa";
+
 import { motion } from "framer-motion";
 
+interface Project {
+  _id: string;
+
+  title: string;
+
+  description: string;
+
+  tech: string[];
+
+  github: string;
+
+  live: string;
+}
+
 export default function Projects() {
-  const [projects, setProjects] = useState<any[]>(
-    []
-  );
+  const [projects, setProjects] =
+    useState<Project[]>([]);
+
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
-    async function fetchProjects() {
-      const res = await fetch("/api/projects");
+    fetchProjects();
+  }, []);
+
+  async function fetchProjects() {
+    try {
+      const res = await fetch(
+        "/api/projects"
+      );
 
       const data = await res.json();
 
-      setProjects(data);
-    }
+      console.log(
+        "Projects API Response:",
+        data
+      );
 
-    fetchProjects();
-  }, []);
+      // HANDLE DIFFERENT RESPONSE SHAPES
+
+      if (Array.isArray(data)) {
+        setProjects(data);
+      } else if (
+        Array.isArray(data.projects)
+      ) {
+        setProjects(data.projects);
+      } else {
+        console.error(
+          "Projects data is not array"
+        );
+
+        setProjects([]);
+      }
+    } catch (error) {
+      console.log(
+        "Fetch Error:",
+        error
+      );
+
+      setProjects([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <section
@@ -42,6 +93,7 @@ export default function Projects() {
         viewport={{ once: true }}
         className="mx-auto max-w-7xl"
       >
+        {/* HEADER */}
 
         <div className="mb-16">
           <h2 className="text-5xl font-bold text-white">
@@ -49,76 +101,134 @@ export default function Projects() {
           </h2>
 
           <p className="mt-4 text-gray-400">
-            Real production-ready applications.
+            Real production-ready
+            applications.
           </p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-3">
+        {/* LOADING */}
 
+        {loading && (
+          <p className="text-gray-400">
+            Loading projects...
+          </p>
+        )}
+
+        {/* EMPTY */}
+
+        {!loading &&
+          projects.length === 0 && (
+            <p className="text-red-400">
+              No projects found.
+            </p>
+          )}
+
+        {/* PROJECT GRID */}
+
+        <div className="grid gap-8 lg:grid-cols-3">
           {projects.map((project) => (
             <div
               key={project._id}
               className="
-              rounded-3xl
-              border
-              border-white/10
-              bg-white/5
-              p-8
-              backdrop-blur-xl
-              transition
-              hover:-translate-y-2
+                rounded-3xl
+                border
+                border-white/10
+                bg-white/5
+                p-8
+                backdrop-blur-xl
+                transition
+                hover:-translate-y-2
               "
             >
-              <div className="mb-6 h-48 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20" />
+              {/* IMAGE PLACEHOLDER */}
+
+              <div
+                className="
+                  mb-6
+                  h-48
+                  rounded-2xl
+                  bg-gradient-to-br
+                  from-indigo-500/20
+                  to-purple-500/20
+                "
+              />
+
+              {/* TITLE */}
 
               <h3 className="text-2xl font-bold text-white">
                 {project.title}
               </h3>
 
+              {/* DESCRIPTION */}
+
               <p className="mt-4 text-gray-400">
                 {project.description}
               </p>
 
+              {/* TECH STACK */}
+
               <div className="mt-6 flex flex-wrap gap-2">
-                {project.tech?.map(
-                  (item: string) => (
-                    <span
-                      key={item}
-                      className="
+                {Array.isArray(
+                  project.tech
+                ) ? (
+                  project.tech.map(
+                    (item, index) => (
+                      <span
+                        key={index}
+                        className="
+                          rounded-full
+                          bg-indigo-500/10
+                          px-4
+                          py-1
+                          text-sm
+                          text-indigo-300
+                        "
+                      >
+                        {item}
+                      </span>
+                    )
+                  )
+                ) : (
+                  <span
+                    className="
                       rounded-full
                       bg-indigo-500/10
                       px-4
                       py-1
                       text-sm
                       text-indigo-300
-                      "
-                    >
-                      {item}
-                    </span>
-                  )
+                    "
+                  >
+                    {project.tech}
+                  </span>
                 )}
               </div>
 
+              {/* LINKS */}
+
               <div className="mt-8 flex gap-5">
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaGithub className="text-2xl text-gray-400 hover:text-white" />
+                  </a>
+                )}
 
-                <a
-                  href={project.github}
-                  target="_blank"
-                >
-                  <FaGithub className="text-2xl text-gray-400 hover:text-white" />
-                </a>
-
-                <a
-                  href={project.live}
-                  target="_blank"
-                >
-                  <ExternalLink className="text-gray-400 hover:text-white" />
-                </a>
-
+                {project.live && (
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLink className="text-gray-400 hover:text-white" />
+                  </a>
+                )}
               </div>
             </div>
           ))}
-
         </div>
       </motion.div>
     </section>

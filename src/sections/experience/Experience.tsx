@@ -20,7 +20,7 @@ export default function Experience() {
             </h3>
 
             <p className="mt-2 text-indigo-400">
-              Walstar Technology • 2023 - 2024
+              CodeWonders Tech LLP | June 2023 - August 2023
             </p>
 
             <p className="mt-4 leading-relaxed text-gray-400">

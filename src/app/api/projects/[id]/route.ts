@@ -2,23 +2,39 @@ import { NextResponse } from "next/server";
 
 import connectDB from "../../../../lib/mongodb";
 import Project from "../../../../models/Project";
+
+type ParamsType = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
 export async function DELETE(
   req: Request,
-  {
-    params,
-  }: {
-    params: {
-      id: string;
-    };
-  }
+  { params }: ParamsType
 ) {
-  await connectDB();
+  try {
+    await connectDB();
 
-  await Project.findByIdAndDelete(
-    params.id
-  );
+    const { id } = await params;
 
-  return NextResponse.json({
-    success: true,
-  });
+    await Project.findByIdAndDelete(id);
+
+    return NextResponse.json({
+      success: true,
+      message: "Project deleted",
+    });
+  } catch (error) {
+    console.log(error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Delete failed",
+      },
+      {
+        status: 500,
+      }
+    );
+  }
 }
