@@ -46,7 +46,7 @@ export default function Navbar() {
     >
       <nav className="flex items-center justify-between">
         <h1 className="text-lg font-bold text-white sm:text-xl">
-          Krushna
+          Krushnat
         </h1>
 
         <div className="flex items-center gap-3 sm:gap-5 md:gap-8">
