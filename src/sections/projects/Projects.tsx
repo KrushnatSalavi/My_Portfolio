@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 
 import { FaGithub } from "react-icons/fa";
@@ -14,6 +15,8 @@ interface Project {
   title: string;
 
   description: string;
+
+  image: string;
 
   tech: string[];
 
@@ -73,6 +76,18 @@ export default function Projects() {
     }
   }
 
+  function normalizeImageSrc(src: unknown) {
+    if (typeof src !== "string") return "/images/krushna1.png";
+
+    const normalized = src.trim().replace(/\\/g, "/");
+    if (!normalized) return "/images/krushna1.png";
+
+    if (normalized.startsWith("/")) return normalized;
+    if (normalized.startsWith("./") || normalized.startsWith("../")) return normalized;
+
+    return `/${normalized}`;
+  }
+
   return (
     <section
       id="projects"
@@ -126,53 +141,51 @@ export default function Projects() {
         {/* PROJECT GRID */}
 
         <div className="grid gap-8 lg:grid-cols-3">
-          {projects.map((project) => (
-            <div
-              key={project._id}
-              className="
-                rounded-3xl
-                border
-                border-white/10
-                bg-white/5
-                p-8
-                backdrop-blur-xl
-                transition
-                hover:-translate-y-2
-              "
-            >
-              {/* IMAGE PLACEHOLDER */}
+          {projects.map((project) => {
+            const imageSrc = normalizeImageSrc(project.image);
 
+            return (
               <div
+                key={project._id}
                 className="
-                  mb-6
-                  h-48
-                  rounded-2xl
-                  bg-gradient-to-br
-                  from-indigo-500/20
-                  to-purple-500/20
+                  rounded-3xl
+                  border
+                  border-white/10
+                  bg-white/5
+                  p-8
+                  backdrop-blur-xl
+                  transition
+                  hover:-translate-y-2
                 "
-              />
+              >
+                {/* IMAGE */}
 
-              {/* TITLE */}
+                <div className="relative mb-6 h-48 overflow-hidden rounded-2xl">
+                  <Image
+                    src={imageSrc}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
 
-              <h3 className="text-2xl font-bold text-white">
-                {project.title}
-              </h3>
+                {/* TITLE */}
 
-              {/* DESCRIPTION */}
+                <h3 className="text-2xl font-bold text-white">
+                  {project.title}
+                </h3>
 
-              <p className="mt-4 text-gray-400">
-                {project.description}
-              </p>
+                {/* DESCRIPTION */}
 
-              {/* TECH STACK */}
+                <p className="mt-4 text-gray-400">
+                  {project.description}
+                </p>
 
-              <div className="mt-6 flex flex-wrap gap-2">
-                {Array.isArray(
-                  project.tech
-                ) ? (
-                  project.tech.map(
-                    (item, index) => (
+                {/* TECH STACK */}
+
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {Array.isArray(project.tech) ? (
+                    project.tech.map((item, index) => (
                       <span
                         key={index}
                         className="
@@ -186,49 +199,49 @@ export default function Projects() {
                       >
                         {item}
                       </span>
-                    )
-                  )
-                ) : (
-                  <span
-                    className="
-                      rounded-full
-                      bg-indigo-500/10
-                      px-4
-                      py-1
-                      text-sm
-                      text-indigo-300
-                    "
-                  >
-                    {project.tech}
-                  </span>
-                )}
+                    ))
+                  ) : (
+                    <span
+                      className="
+                        rounded-full
+                        bg-indigo-500/10
+                        px-4
+                        py-1
+                        text-sm
+                        text-indigo-300
+                      "
+                    >
+                      {project.tech}
+                    </span>
+                  )}
+                </div>
+
+                {/* LINKS */}
+
+                <div className="mt-8 flex gap-5">
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaGithub className="text-2xl text-gray-400 hover:text-white" />
+                    </a>
+                  )}
+
+                  {project.live && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink className="text-gray-400 hover:text-white" />
+                    </a>
+                  )}
+                </div>
               </div>
-
-              {/* LINKS */}
-
-              <div className="mt-8 flex gap-5">
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub className="text-2xl text-gray-400 hover:text-white" />
-                  </a>
-                )}
-
-                {project.live && (
-                  <a
-                    href={project.live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="text-gray-400 hover:text-white" />
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </motion.div>
     </section>

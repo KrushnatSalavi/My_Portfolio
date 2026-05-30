@@ -8,10 +8,37 @@ interface Project {
   _id: string;
   title: string;
   description: string;
-  image: string;
+  image?: string;
   github: string;
   live: string;
   tech: string;
+}
+
+function getSafeImageSrc(src: unknown) {
+  if (typeof src !== "string") return "/images/krushna1.png";
+
+  const normalized = src.trim().replace(/\\/g, "/");
+  if (!normalized) return "/images/krushna1.png";
+
+  const encoded = encodeURI(normalized);
+
+  if (/^(https?:|data:|blob:)/i.test(encoded)) {
+    try {
+      new URL(encoded);
+      return encoded;
+    } catch {
+      return "/images/krushna1.png";
+    }
+  }
+
+  if (/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(encoded)) {
+    return "/images/krushna1.png";
+  }
+
+  if (encoded.startsWith("/")) return encoded;
+  if (encoded.startsWith("./") || encoded.startsWith("../")) return encoded;
+
+  return `/${encoded}`;
 }
 
 export default function Dashboard() {
@@ -269,26 +296,28 @@ export default function Dashboard() {
 
           <div className="mt-10 grid gap-6">
 
-            {projects.map((project) => (
-              <div
-                key={project._id}
-                className="rounded-3xl border border-white/10 bg-white/5 p-6"
-              >
+            {projects.map((project) => {
+              const imageSrc = getSafeImageSrc(
+                project.image
+              );
 
-                {/* IMAGE */}
+              return (
+                <div
+                  key={project._id}
+                  className="rounded-3xl border border-white/10 bg-white/5 p-6"
+                >
 
-                <div className="relative mb-6 h-56 w-full overflow-hidden rounded-2xl">
+                  {/* IMAGE */}
 
-                  <Image
-                    src={
-                      project.image ||
-                      "/images/default.png"
-                    }
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                  <div className="relative mb-6 h-56 w-full overflow-hidden rounded-2xl">
+
+                    <Image
+                      src={imageSrc}
+                      alt={project.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
 
                 {/* TITLE */}
 
@@ -342,7 +371,8 @@ export default function Dashboard() {
                   Delete
                 </button>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

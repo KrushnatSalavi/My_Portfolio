@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "../../../lib/mongodb";
 import Project from "../../../models/Project";
-import { image } from "framer-motion/client";
 
 export async function GET() {
   try {
@@ -43,6 +42,7 @@ export async function POST(
     const {
       title,
       description,
+      image,
       tech,
       github,
       live,
