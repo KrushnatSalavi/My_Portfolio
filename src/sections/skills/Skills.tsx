@@ -4,7 +4,7 @@ const skills = {
   Frontend: ["React", "Next.js", "Tailwind CSS", "TypeScript", "JavaScript"],
   Backend: ["Node.js", "Express.js", "REST APIs"],
   Database: ["MongoDB", "MySQL"],
-  Tools: ["Git", "GitHub", "Postman", "Vercel"],
+  Tools: ["Git", "GitHub", "Postman", "Vercel"," Docker","Kubernetes"],
 };
 
 export default function Skills() {
