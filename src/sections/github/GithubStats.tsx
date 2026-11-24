@@ -25,7 +25,7 @@ export default function GithubStats() {
             </h3>
 
             <p className="mt-4 text-5xl font-black text-white">
-              30+
+              10+
             </p>
           </div>
 
